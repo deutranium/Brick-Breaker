@@ -1,0 +1,9 @@
+SCORE = 0
+LIVES = 3
+TIME_ELAPSED = 0
+FPS = 40
+
+ROWS = 20
+COLS = 100
+
+SPEED = 2
