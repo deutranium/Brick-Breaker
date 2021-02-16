@@ -39,6 +39,8 @@ while True:
         pd.v = 1
     elif txt.lower() == "q":
         break
+    else:
+        pd.v = 0
 
     if (pd.x + pd.v*SPEED + pd.width + 2 > COLS) or (pd.x + pd.v*SPEED < 0):
         pd.v = 0
@@ -46,9 +48,3 @@ while True:
     time.sleep(t)
     # ball.move()
     pd.move()
-
-
-# print(ball)
-# for i in range(5):
-#     print(unbreakable_brick, end='')
-#     print(brick)

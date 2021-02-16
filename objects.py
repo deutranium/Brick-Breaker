@@ -16,10 +16,9 @@ class Paddle:
         self.width = width
         self.height = height
 
-        self.x = 1
+        self.x = 0
         self.y = 6
-
-        self.v = 1
+        self.v = 0
 
 
     def move(self):
@@ -61,7 +60,6 @@ class Ball:
 
         self.x = randrange(COLS)
         self.y = 1
-    
         self.vx = 2
         self.vy = 1
 
