@@ -30,8 +30,8 @@ while True:
     print(ball.display())
     print(display_arr)
 
-    # txt = input_char()
-    txt = ""
+    txt = input_char(timeout = t)
+    # txt = getChar()()
 
     if txt.lower() == "a":
         pd.v = -1

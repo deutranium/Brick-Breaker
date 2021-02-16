@@ -1,6 +1,8 @@
 from variables import *
 from getch import _getChUnix as getChar
 import time
+from alarmexception import *
+import signal
 
 def print_stats(time, lives, score):
     print(
@@ -15,9 +17,17 @@ def setup(start_time):
     print_stats(cur_time, LIVES, SCORE)
     print("_"*COLS)
 
-def input_char():
+def alarm_handler(signum, frame):
+    raise AlarmException
+
+def input_char(timeout):
+    signal.signal(signal.SIGALRM, alarm_handler)
+    signal.setitimer(signal.ITIMER_REAL, timeout)
     try:
         txt = getChar()()
+        signal.alarm(0)
         return txt
-    except:
-        return ""
+    except AlarmException:
+        pass
+    signal.signal(signal.SIGALRM, signal.SIG_IGN)
+    return ''
