@@ -6,7 +6,7 @@ unbreakable_brick = "|_x_|"
 
 brick = "|___|"
 
-from variables import *
+import variables as V
 from random import randrange
 
 
@@ -17,22 +17,22 @@ class Paddle:
         self.height = height
 
         self.x = 0
-        self.y = 6
+        self.y = 0
         self.v = 0
 
 
     def move(self):
-        self.x += self.v * SPEED
+        self.x += self.v * V.SPEED
 
-    def display(self, symbol, arr):
+    def display(self):
         y = self.y
         x = self.x
 
         h = self.height
         w = self.width
 
-        for i in range(y, y+h):
-            arr[i] = arr[i][:x] + "<" + "="*w + ">" + arr[i][x+w:]
+        
+        arr = [" "]*x + ["<"] + ["="]*w + [">"]
 
         return arr
 
@@ -58,7 +58,7 @@ class Ball:
         self.width = 0
         self.height = 0
 
-        self.x = randrange(COLS)
+        self.x = randrange(V.COLS)
         self.y = 1
         self.vx = 2
         self.vy = 1

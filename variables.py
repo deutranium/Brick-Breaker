@@ -8,4 +8,4 @@ COLS = 100
 
 SPEED = 2
 
-GAME_ARR = [['.']*COLS]*ROWS
+GAME_ARR = [['.']*(COLS)]*(ROWS + 3)

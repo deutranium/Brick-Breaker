@@ -1,4 +1,5 @@
 from headers import *
+import variables as V
 
 start_time = time.time()
 game_time = time.time()
@@ -8,27 +9,16 @@ t = 1/FPS
 os.system('clear')
 
 pd = Paddle(6, 1)
-
 bk = Brick(1, 1)
-
 ball = Ball()
-
-blank_arr = []
-
-for i in range(ROWS):
-    blank_arr.append(' '*COLS + '\n')
 
 while True:
 
     setup(start_time)
 
-    display_arr = copy.deepcopy(blank_arr)
-
-    display_arr = pd.display(" ", display_arr)
-    display_arr = ''.join(display_arr)
+    V.GAME_ARR[-2] = pd.display()
     print(bk.display())
     print(ball.display())
-    print(display_arr)
 
     txt = input_char(timeout = t)
     # txt = getChar()()
