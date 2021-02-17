@@ -56,7 +56,7 @@ class Ball:
 
         self.init_x = 5
         self.init_y = 5
-        self.vx = 1
+        self.vx = 2
         self.vy = 1
 
         self.angle = self.vx/self.vy
