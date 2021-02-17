@@ -9,6 +9,8 @@ brick = "|___|"
 import variables as V
 from random import randrange
 
+import time
+
 class Paddle:
     def __init__ (self, width, height = 1):
         super().__init__()
@@ -56,7 +58,7 @@ class Ball:
 
         self.init_x = 5
         self.init_y = 5
-        self.vx = 2
+        self.vx = 4
         self.vy = 1
 
         self.angle = self.vx/self.vy
@@ -86,25 +88,29 @@ class Ball:
             self.x += 1*(self.vx)/abs(self.vx)
 
         if(self.next_x == self.x) and (self.next_y == self.y):
+
             self.angle = self.vx/self.vy
             self.init_x = round(self.x)
             self.init_y = round(self.y)
 
             self.next_x = self.init_x + self.vx
             self.next_y = self.init_y + self.vy
+
+            if(self.init_x + self.vx >= V.COLS - 1) or (self.init_x + self.vx <= 0):
+                self.vx *= -1
+                self.next_x = self.init_x + self.vx
+            if(self.init_y + self.vy <= 0):
+                self.vy *= -1
+                self.next_y = self.init_y + self.vy
+            else:
+                self.init_x = (self.vx + self.init_x)%V.COLS
+                self.init_y = (self.vy + self.init_y)%V.ROWS
             
 
         
 
 
         # V.GAME_ARR[self.y][self.x] = "."
-        # if(self.x + self.vx >= V.COLS - 1) or (self.x + self.vx <= 0):
-        #     self.vx *= -1
-        # if(self.y + self.vy <= 0):
-        #     self.vy *= -1
-        # else:
-        # self.x = (self.vx + self.x)%V.COLS
-        # self.y = (self.vy + self.y)%V.ROWS
 
 
 

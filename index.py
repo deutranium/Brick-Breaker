@@ -83,23 +83,33 @@ def end_game():
 
 def paddle_bounce():
     ball.vy *= -1
-    ball_x = ball.init_x
+    # ball_x = ball.init_x
     
     ball.vx = round(abs(pd.x - pd.width/2)/15) * round((ball.vx)/abs(ball.vx))
+    ball.init_x = ball.init_x + ball.vx
+    ball.init_y = ball.init_y + ball.vy
+    ball.next_x = ball.init_x + ball.vx
+    ball.next_y = ball.init_y + ball.vy
+    ball.move()
+
+    print(ball.vy)
+    print(ball.vx)
+    time.sleep(1)
 
 while True:
     txt = input_char(timeout = t)
+    if(txt != None):
+        time.sleep(t)
     if txt.lower() == "a":
-        pd.v = -2
+        pd.v = -1
     elif txt.lower() == "d":
-        pd.v = 2
+        pd.v = 1
     elif txt.lower() == "q":
         break
     else:
         pd.v = 0
 
     if(ball.init_y + ball.vy >= V.ROWS):
-        break
         if (pd.x - 1 <= ball.init_x <= pd.x + pd.width + 1):
             paddle_bounce()
             
@@ -111,13 +121,14 @@ while True:
         
     GAME_ARR[ball.init_y][ball.init_x] = ball.display()
 
-    if (pd.x + pd.v*SPEED + pd.width + 2 > COLS) or (pd.x + pd.v*SPEED < 0):
+    if (pd.x + pd.v*SPEED + pd.width + 1 > COLS) or (pd.x + pd.v*SPEED < 0):
         pd.v = 0
 
     pd.move()
     GAME_ARR[-1] = pd.display()
     
     setup()
+    
     time.sleep(t)
     GAME_ARR[ball.init_y][ball.init_x] = "."
 
