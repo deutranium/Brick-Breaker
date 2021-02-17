@@ -8,4 +8,4 @@ COLS = 100
 
 SPEED = 2
 
-GAME_ARR = [['.']*(COLS)]*(ROWS + 3)
+GAME_ARR = [["." for x in range(COLS + 3)] for y in range(ROWS + 3)] 

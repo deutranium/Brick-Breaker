@@ -17,7 +17,6 @@ class Paddle:
         self.height = height
 
         self.x = 0
-        self.y = 0
         self.v = 0
 
 
@@ -25,10 +24,8 @@ class Paddle:
         self.x += self.v * V.SPEED
 
     def display(self):
-        y = self.y
         x = self.x
 
-        h = self.height
         w = self.width
 
         
@@ -58,19 +55,20 @@ class Ball:
         self.width = 0
         self.height = 0
 
-        self.x = randrange(V.COLS)
-        self.y = 1
+        self.x = 5
+        self.y = 5
         self.vx = 2
-        self.vy = 1
+        self.vy = 1        
 
     def move(self):
-        self.x += self.vx
-        self.y += self.vy
+        # V.GAME_ARR[self.y][self.x] = "."
+        self.x = (self.vx + self.x)%V.COLS
+        self.y = (self.vy + self.y)%V.ROWS
 
     def display(self):
         y = self.y
         x = self.x
 
-        return ('\n'*y + ' '*x + ball)
+        return ball
 
 

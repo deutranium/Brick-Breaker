@@ -20,6 +20,8 @@ def setup(start_time):
             print(j, end="")
         print()
 
+    # print(GAME_ARR[0][1])
+
 
 
 
