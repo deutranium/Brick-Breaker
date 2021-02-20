@@ -39,12 +39,12 @@ class Paddle:
         w = self.width
 
         
-        arr = [Back.WHITE + " "]*x + [Back.MAGENTA + Style.BRIGHT + "|"] + [" "]*w + ["|"] + [ Back.WHITE + " "*(V.COLS - x - w - 2) + Style.RESET_ALL]
+        arr = [Back.WHITE + " "]*x + [Back.MAGENTA + Style.BRIGHT + "|"] + ["|"]*w + ["|"] + [ Back.WHITE + " "*(V.COLS - x - w - 2) + Style.RESET_ALL]
 
         return arr
 
 class Brick:
-    def __init__ (self, width=1, height=1):
+    def __init__ (self, id, width=1, height=1):
         super().__init__()
 
         self.width = 1
@@ -53,21 +53,26 @@ class Brick:
         self.x = 1
         self.y = 1
 
+        self.id = id
+
     def display(self):
         y = self.y
         x = self.x
 
-        return ('\n'*y + ' '*x + brick)
+        return ('\n'*y + ' '*x + brick1)
+
 
 class Ball:
-    def __init__ (self):
+    def __init__ (self, pd):
         super().__init__()
         self.width = 0
         self.height = 0
 
-        self.init_x = 5
-        self.init_y = 5
-        self.vx = 4
+        self.paddle_location = randrange(pd.width)
+
+        self.init_x = pd.x
+        self.init_y = V.ROWS - 2
+        self.vx = 1
         self.vy = 1
 
         self.angle = self.vx/self.vy
@@ -80,78 +85,126 @@ class Ball:
         self.im_x = self.x + (self.vx)/abs(self.vx)
         self.im_y = self.y + (self.vy)/abs(self.vy)
 
-        self.attached = False
+        self.attached = True
 
 
-    def move(self, paddle):
+    def move(self, paddle, GAME_ARR):
 
-        # predicted location
-        self.im_x = self.x + (self.vx)/abs(self.vx)
-        self.im_y = self.y + (self.vy)/abs(self.vy)
-
-        if(self.next_y == self.y):
-            if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)):
-                self.vx *= -1
-                self.init_x = round(self.x)
-                self.init_y = round(self.y)
-
-                self.next_x = self.init_x + self.vx
-                self.next_y = self.init_y + self.vy
-
-            self.x += 1*(self.vx)/abs(self.vx)
-
-
-
-        elif((self.next_y == self.im_y) or (self.next_x - self.im_x)/(self.next_y - self.y) > self.angle):
-            if((self.y + 1*(self.vy)/abs(self.vy) == 0) or ((self.y + 1*(self.vy)/abs(self.vy) == V.ROWS - 1) and (paddle.x - 1 <= self.init_x <= paddle.x + paddle.width + 1))):
-                self.vy *= -1
-                self.init_x = round(self.x)
-                self.init_y = round(self.y)
-
-                self.next_x = self.init_x + self.vx
-                self.next_y = self.init_y + self.vy
-
-            self.y += 1*(self.vy)/abs(self.vy)
-
-
+        if(self.attached):
+            self.init_x = paddle.x + self.paddle_location
+            self.x = self.init_x
+            self.im_x = self.x + (self.vx)/abs(self.vx)
 
         else:
-            if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)):
-                self.vx *= -1
-                self.init_x = self.x
-                self.init_y = self.y
+
+        # predicted location
+            self.im_x = self.x + (self.vx)/abs(self.vx)
+            self.im_y = self.y + (self.vy)/abs(self.vy)
+
+            print(str(round(self.x)))
+            print(str(round(self.y)))
+            print(str(round(self.x + 1*(self.vx)/abs(self.vx))) + "bvekjbvdc")
+            print(str(round(self.y + 1*(self.vy)/abs(self.vy))) + "freiythfgejkr")
+
+            check_brick_x = GAME_ARR[round(self.y)][round(self.x + 1*(self.vx)/abs(self.vx))]
+            print(check_brick_x)
+            check_brick_y = GAME_ARR[round(self.y + 1*(self.vy)/abs(self.vy))][round(self.x)]
+            print(check_brick_y)
+
+            if(self.next_y == self.y):
+                if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or
+                    (self.x + 1*(self.vx)/abs(self.vx) == 0) or
+                    check_brick_x == 1 ):
+
+                    if(check_brick_x == 1):
+                        print("bjfdkc")
+                        time.sleep(1)
+
+
+                    self.vx *= -1
+                    self.init_x = round(self.x)
+                    self.init_y = round(self.y)
+
+                    self.next_x = self.init_x + self.vx
+                    self.next_y = self.init_y + self.vy
+
+                self.x += 1*(self.vx)/abs(self.vx)
+
+
+
+            elif((self.next_y == self.im_y) or (self.next_x - self.im_x)/(self.next_y - self.y) > self.angle):
+                if((self.y + 1*(self.vy)/abs(self.vy) == 0) 
+                or ((self.y + 1*(self.vy)/abs(self.vy) == V.ROWS - 1)) 
+                and (paddle.x - 1 <= self.init_x <= paddle.x + paddle.width + 1)
+                or check_brick_y == 1):
+
+                    if (paddle.x - 1 <= self.init_x <= paddle.x + paddle.width + 1) and ((self.y + 1*(self.vy)/abs(self.vy) == V.ROWS - 1)):
+                        self.vx = abs((self.x - paddle.x) - (paddle.width/2 - paddle.x)) + 1
+
+                        if self.vx > 4:
+                            self.vx = 4
+                        if self.vx < -4:
+                            self.vx = -4
+
+                    if(check_brick_y == 1):
+                        print("ykdsjfhreikj")
+                        time.sleep(1)
+
+                    self.vy *= -1
+                    self.init_x = round(self.x)
+                    self.init_y = round(self.y)
+
+                    self.next_x = self.init_x + self.vx
+                    self.next_y = self.init_y + self.vy
+
+                self.y += 1*(self.vy)/abs(self.vy)
+
+
+
+            else:
+                if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)
+                or check_brick_x == 1):
+                    if(check_brick_x == 1):
+                        print("bjfdkc")
+                        time.sleep(1)
+
+
+
+                    self.vx *= -1
+                    self.init_x = self.x
+                    self.init_y = self.y
+
+                    self.next_x = self.init_x + self.vx
+                    self.next_y = self.init_y + self.vy
+                self.x += 1*(self.vx)/abs(self.vx)
+
+            if(self.next_x == self.x) and (self.next_y == self.y):
+
+                self.angle = self.vx/self.vy
+                self.init_x = round(self.x)
+                self.init_y = round(self.y)
 
                 self.next_x = self.init_x + self.vx
                 self.next_y = self.init_y + self.vy
-            self.x += 1*(self.vx)/abs(self.vx)
 
-        if(self.next_x == self.x) and (self.next_y == self.y):
+            # if(self.x >= V.COLS - 1) or (self.x <= 0):
+            #     self.vx *= -1
+            #     self.init_x = round(self.x) + self.vx
+            #     self.init_y = round(self.y) + self.vy
+            #     self.next_x = self.init_x + self.vx
+            #     self.next_y = self.init_y + self.vy
+            # if(self.y <= 0):
+            #     self.vy *= -1
+            #     self.init_x = round(self.x) + self.vx
+            #     self.init_y = round(self.y) + self.vy
+            #     self.next_y = self.init_y + self.vy
+            #     self.next_x = self.init_x + self.vx
+                
 
-            self.angle = self.vx/self.vy
-            self.init_x = round(self.x)
-            self.init_y = round(self.y)
-
-            self.next_x = self.init_x + self.vx
-            self.next_y = self.init_y + self.vy
-
-        # if(self.x >= V.COLS - 1) or (self.x <= 0):
-        #     self.vx *= -1
-        #     self.init_x = round(self.x) + self.vx
-        #     self.init_y = round(self.y) + self.vy
-        #     self.next_x = self.init_x + self.vx
-        #     self.next_y = self.init_y + self.vy
-        # if(self.y <= 0):
-        #     self.vy *= -1
-        #     self.init_x = round(self.x) + self.vx
-        #     self.init_y = round(self.y) + self.vy
-        #     self.next_y = self.init_y + self.vy
-        #     self.next_x = self.init_x + self.vx
             
 
-        
 
-
-        # V.GAME_ARR[self.y][self.x] = self.display()
+            # V.GAME_ARR[self.y][self.x] = self.display()
 
 
 

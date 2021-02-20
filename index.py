@@ -16,12 +16,15 @@ t = 1/FPS
 ROWS = V.ROWS
 COLS = V.COLS
 SPEED = 2
-GAME_ARR = [[(Back.WHITE + " " + Style.RESET_ALL) for x in range(COLS)] for y in range(ROWS)]
+BLOCK = 0
+GAME_ARR = [[BLOCK for x in range(COLS)] for y in range(ROWS)]
 
+for i in range(4):
+    GAME_ARR[4][i + 15] = 1
 start_time = time.time()
 
 pd = Paddle(20, 1)
-ball = Ball()
+ball = Ball(pd)
 
 # print stats like life etc.
 def print_stats(time, lives, score):
@@ -39,8 +42,12 @@ def setup():
     print("_"*COLS)
     for i in GAME_ARR:
         for j in i:
-            print(j, end="")
+            if j == 0:
+                print(Back.WHITE + str(j) + Style.RESET_ALL, end="")
+            else:
+                print(j, end="")
         print()
+    print(Style.RESET_ALL)
 
 
 # set alam stuff for input char
@@ -89,6 +96,8 @@ while True:
         pd.v = 1
     elif txt.lower() == "q":
         break
+    elif ball.attached and txt.lower() == "p":
+        ball.attached = False
     else:
         pd.v = 0
 
@@ -98,8 +107,9 @@ while True:
             end_game()
             break
     else:
-        ball.move(pd)
-        ball.move(pd)
+        ball.move(pd, GAME_ARR)
+        # ball.move(pd, )
+        # pass
         
     GAME_ARR[round(ball.init_y)][round(ball.init_x)] = ball.display()
 
@@ -115,5 +125,5 @@ while True:
     
     
     time.sleep(t)
-    GAME_ARR[ball.init_y][ball.init_x] = (Back.WHITE + " " + Style.RESET_ALL)
+    GAME_ARR[ball.init_y][ball.init_x] = 0
 
