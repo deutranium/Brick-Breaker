@@ -1,15 +1,24 @@
-paddle = "<========>"
-
-ball = "⬤"
-
-unbreakable_brick = "|_x_|"
-
-brick = "|___|"
 
 import variables as V
 from random import randrange
 
 import time
+
+from colorama import init, Fore, Back, Style
+
+# paddle = Fore.BLACK + Back.RED + "<========>" + Style.RESET_ALL
+
+ball = (Back.WHITE + Fore.CYAN + "⬤" + Style.RESET_ALL)
+
+unbreakable_brick = "|_x_|"
+
+brick1 = Back.GREEN + "1111" + Style.RESET_ALL
+brick2 = Back.YELLOW + "2222" + Style.RESET_ALL
+brick3 = Back.RED + "3333" + Style.RESET_ALL
+brick_unbreakable = Back.BLUE + "0000" + Style.RESET_ALL
+
+
+init()
 
 class Paddle:
     def __init__ (self, width, height = 1):
@@ -30,7 +39,7 @@ class Paddle:
         w = self.width
 
         
-        arr = [" "]*x + ["<"] + ["="]*w + [">"]
+        arr = [Back.WHITE + " "]*x + [Back.MAGENTA + Style.BRIGHT + "|"] + [" "]*w + ["|"] + [ Back.WHITE + " "*(V.COLS - x - w - 2) + Style.RESET_ALL]
 
         return arr
 
@@ -75,8 +84,6 @@ class Ball:
 
 
     def move(self, paddle):
-
-        # current location
 
         # predicted location
         self.im_x = self.x + (self.vx)/abs(self.vx)

@@ -5,6 +5,9 @@ from alarmexception import *
 import signal
 import variables as V
 
+from colorama import init, Fore, Back, Style
+
+
 SCORE = 0
 LIVES = 3
 TIME_ELAPSED = 0
@@ -13,7 +16,7 @@ t = 1/FPS
 ROWS = V.ROWS
 COLS = V.COLS
 SPEED = 2
-GAME_ARR = [["." for x in range(COLS)] for y in range(ROWS)]
+GAME_ARR = [[(Back.WHITE + " " + Style.RESET_ALL) for x in range(COLS)] for y in range(ROWS)]
 
 start_time = time.time()
 
@@ -76,21 +79,6 @@ def end_game():
     print("\033[H\033[J", end="")
     print(msg % (TIME_ELAPSED, LIVES, SCORE))
 
-
-def paddle_bounce():
-    ball.vy *= -1
-    
-    ball.vx = round((ball.x - pd.width/2) - (pd.x - pd.width/2))
-
-    if ball.vx > 7:
-        ball.vx = 7
-    elif ball.vx < -7:
-        ball.vx = -7
-
-    ball.next_x = ball.init_x + ball.vx
-    ball.next_y = ball.init_y + ball.vy
-    ball.move()
-
 while True:
     txt = input_char(timeout = t/2)
     if(txt != None):
@@ -125,6 +113,7 @@ while True:
     print(ball.vx)
     print(ball.vy)
     
+    
     time.sleep(t)
-    GAME_ARR[ball.init_y][ball.init_x] = "."
+    GAME_ARR[ball.init_y][ball.init_x] = (Back.WHITE + " " + Style.RESET_ALL)
 
