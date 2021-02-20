@@ -5,20 +5,15 @@ from alarmexception import *
 import signal
 import variables as V
 
-
 SCORE = 0
 LIVES = 3
 TIME_ELAPSED = 0
 FPS = 30
 t = 1/FPS
-
-
 ROWS = V.ROWS
 COLS = V.COLS
-
 SPEED = 2
-
-GAME_ARR = [["." for x in range(COLS)] for y in range(ROWS+1)]
+GAME_ARR = [["." for x in range(COLS)] for y in range(ROWS)]
 
 start_time = time.time()
 
@@ -62,6 +57,7 @@ def input_char(timeout):
     signal.signal(signal.SIGALRM, signal.SIG_IGN)
     return ''
 
+# end game
 def end_game():
     msg = """⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⢀⡤⢶⣶⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -83,23 +79,22 @@ def end_game():
 
 def paddle_bounce():
     ball.vy *= -1
-    # ball_x = ball.init_x
     
-    ball.vx = round(abs(pd.x - pd.width/2)/15) * round((ball.vx)/abs(ball.vx))
-    ball.init_x = ball.init_x + ball.vx
-    ball.init_y = ball.init_y + ball.vy
+    ball.vx = round((ball.x - pd.width/2) - (pd.x - pd.width/2))
+
+    if ball.vx > 7:
+        ball.vx = 7
+    elif ball.vx < -7:
+        ball.vx = -7
+
     ball.next_x = ball.init_x + ball.vx
     ball.next_y = ball.init_y + ball.vy
     ball.move()
 
-    print(ball.vy)
-    print(ball.vx)
-    time.sleep(1)
-
 while True:
-    txt = input_char(timeout = t)
+    txt = input_char(timeout = t/2)
     if(txt != None):
-        time.sleep(t)
+        time.sleep(t/2)
     if txt.lower() == "a":
         pd.v = -1
     elif txt.lower() == "d":
@@ -110,16 +105,15 @@ while True:
         pd.v = 0
 
     if(ball.init_y + ball.vy >= V.ROWS):
-        if (pd.x - 1 <= ball.init_x <= pd.x + pd.width + 1):
-            paddle_bounce()
-            
-        else:
+        LIVES -= 1
+        if LIVES == 0:
             end_game()
             break
     else:
-        ball.move()
+        ball.move(pd)
+        ball.move(pd)
         
-    GAME_ARR[ball.init_y][ball.init_x] = ball.display()
+    GAME_ARR[round(ball.init_y)][round(ball.init_x)] = ball.display()
 
     if (pd.x + pd.v*SPEED + pd.width + 1 > COLS) or (pd.x + pd.v*SPEED < 0):
         pd.v = 0
@@ -128,6 +122,8 @@ while True:
     GAME_ARR[-1] = pd.display()
     
     setup()
+    print(ball.vx)
+    print(ball.vy)
     
     time.sleep(t)
     GAME_ARR[ball.init_y][ball.init_x] = "."

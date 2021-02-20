@@ -71,8 +71,10 @@ class Ball:
         self.im_x = self.x + (self.vx)/abs(self.vx)
         self.im_y = self.y + (self.vy)/abs(self.vy)
 
+        self.attached = False
 
-    def move(self):
+
+    def move(self, paddle):
 
         # current location
 
@@ -81,10 +83,39 @@ class Ball:
         self.im_y = self.y + (self.vy)/abs(self.vy)
 
         if(self.next_y == self.y):
+            if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)):
+                self.vx *= -1
+                self.init_x = round(self.x)
+                self.init_y = round(self.y)
+
+                self.next_x = self.init_x + self.vx
+                self.next_y = self.init_y + self.vy
+
             self.x += 1*(self.vx)/abs(self.vx)
-        elif((self.next_y == self.im_y) or (self.next_x - self.im_x)/(self.next_y - self.y)>(self.next_x - self.x)/(self.next_y - self.im_y)):
+
+
+
+        elif((self.next_y == self.im_y) or (self.next_x - self.im_x)/(self.next_y - self.y) > self.angle):
+            if((self.y + 1*(self.vy)/abs(self.vy) == 0) or ((self.y + 1*(self.vy)/abs(self.vy) == V.ROWS - 1) and (paddle.x - 1 <= self.init_x <= paddle.x + paddle.width + 1))):
+                self.vy *= -1
+                self.init_x = round(self.x)
+                self.init_y = round(self.y)
+
+                self.next_x = self.init_x + self.vx
+                self.next_y = self.init_y + self.vy
+
             self.y += 1*(self.vy)/abs(self.vy)
+
+
+
         else:
+            if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)):
+                self.vx *= -1
+                self.init_x = self.x
+                self.init_y = self.y
+
+                self.next_x = self.init_x + self.vx
+                self.next_y = self.init_y + self.vy
             self.x += 1*(self.vx)/abs(self.vx)
 
         if(self.next_x == self.x) and (self.next_y == self.y):
@@ -96,21 +127,24 @@ class Ball:
             self.next_x = self.init_x + self.vx
             self.next_y = self.init_y + self.vy
 
-            if(self.init_x + self.vx >= V.COLS - 1) or (self.init_x + self.vx <= 0):
-                self.vx *= -1
-                self.next_x = self.init_x + self.vx
-            if(self.init_y + self.vy <= 0):
-                self.vy *= -1
-                self.next_y = self.init_y + self.vy
-            else:
-                self.init_x = (self.vx + self.init_x)%V.COLS
-                self.init_y = (self.vy + self.init_y)%V.ROWS
+        # if(self.x >= V.COLS - 1) or (self.x <= 0):
+        #     self.vx *= -1
+        #     self.init_x = round(self.x) + self.vx
+        #     self.init_y = round(self.y) + self.vy
+        #     self.next_x = self.init_x + self.vx
+        #     self.next_y = self.init_y + self.vy
+        # if(self.y <= 0):
+        #     self.vy *= -1
+        #     self.init_x = round(self.x) + self.vx
+        #     self.init_y = round(self.y) + self.vy
+        #     self.next_y = self.init_y + self.vy
+        #     self.next_x = self.init_x + self.vx
             
 
         
 
 
-        # V.GAME_ARR[self.y][self.x] = "."
+        # V.GAME_ARR[self.y][self.x] = self.display()
 
 
 
