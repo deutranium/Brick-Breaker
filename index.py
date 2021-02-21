@@ -34,19 +34,37 @@ def print_stats(time, lives, score):
         """ % (time, lives, score)
     )
 
-GAME_ARR = brick.create_bricks(COLS, ROWS, 20, GAME_ARR)
+BRICKS = brick.create_bricks(COLS, ROWS, 80, GAME_ARR)
+V.BRICKS = BRICKS
+
+GAME_ARR = brick.display_bricks(V.BRICKS, GAME_ARR)
+
+COLORS = {
+    1: Back.RED,
+    2: Back.GREEN,
+    3: Back.BLUE,
+    1000: Back.BLACK
+}
 
 # RENDER GAME_ARR
 def setup():
     global TIME_ELAPSED
     TIME_ELAPSED = round(time.time() - start_time)
     print("\033[H\033[J", end="")
-    print_stats(TIME_ELAPSED, LIVES, SCORE)
+    print_stats(TIME_ELAPSED, LIVES, V.SCORE)
     print("_"*COLS)
-    for i in GAME_ARR:
-        for j in i:
+    for idx, i in enumerate(GAME_ARR):
+        for idx_j, j in enumerate(i):
             if j == 0:
                 print(Back.WHITE + str(j) + Style.RESET_ALL, end="")
+            elif j == 1:
+                # print(Back.RED + str(j) + Style.RESET_ALL, end="")
+                for brick in V.BRICKS:
+                    if(brick.x == idx_j) and (brick.y == idx):
+                        strngth = brick.strength
+                        # print("!", end="")
+                        print(COLORS[strngth] + str(j) + Style.RESET_ALL, end="")
+                        # time.sleep(1)
             else:
                 print(j, end="")
         print()
@@ -115,7 +133,10 @@ for i in range(3):
             if ball.check_death(pd):
                 break
             else:
-                ball.move(pd, GAME_ARR)
+                GAME_ARR = ball.move(pd, GAME_ARR, BRICKS)
+                GAME_ARR = brick.display_bricks(V.BRICKS, GAME_ARR)
+
+
  
         print(type(GAME_ARR[-1]))
             

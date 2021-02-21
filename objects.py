@@ -4,6 +4,8 @@ from random import randrange
 
 import time
 
+from brick import *
+
 from colorama import init, Fore, Back, Style
 
 # paddle = Fore.BLACK + Back.RED + "<========>" + Style.RESET_ALL
@@ -77,7 +79,7 @@ class Ball:
             return 1
 
 
-    def move(self, paddle, GAME_ARR):
+    def move(self, paddle, GAME_ARR, BRICKS):
 
         if(self.attached):
             self.init_x = paddle.x + self.paddle_location
@@ -101,8 +103,7 @@ class Ball:
                     check_brick_x == 1 ):
 
                     if(check_brick_x == 1):
-                        print("bjfdkc")
-                        time.sleep(1)
+                        GAME_ARR = collide_brick(round(self.y),round(self.x + 1*(self.vx)/abs(self.vx)), BRICKS, GAME_ARR)
 
 
                     self.vx *= -1
@@ -131,8 +132,7 @@ class Ball:
                             self.vx = -4
 
                     if(check_brick_y == 1):
-                        print("ykdsjfhreikj")
-                        time.sleep(1)
+                        GAME_ARR = collide_brick(round(self.y + 1*(self.vy)/abs(self.vy)), round(self.x), BRICKS, GAME_ARR)
 
                     self.vy *= -1
                     self.init_x = round(self.x)
@@ -149,8 +149,7 @@ class Ball:
                 if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)
                 or check_brick_x == 1):
                     if(check_brick_x == 1):
-                        print("bjfdkc")
-                        time.sleep(1)
+                        GAME_ARR = collide_brick(round(self.y),round(self.x + 1*(self.vx)/abs(self.vx)), BRICKS, GAME_ARR)
 
 
 
@@ -170,6 +169,8 @@ class Ball:
 
                 self.next_x = self.init_x + self.vx
                 self.next_y = self.init_y + self.vy
+        
+        return GAME_ARR
 
             # if(self.x >= V.COLS - 1) or (self.x <= 0):
             #     self.vx *= -1

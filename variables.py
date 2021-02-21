@@ -7,3 +7,5 @@ ROWS = 30
 COLS = 100
 
 SPEED = 2
+
+BRICKS = []
