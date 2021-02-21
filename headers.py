@@ -8,3 +8,4 @@ from utility import *
 from objects import *
 
 from getch import _getChUnix as getChar
+from colorama import init, Fore, Back, Style

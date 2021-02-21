@@ -1,7 +1,8 @@
-from colorama import init, Fore, Back, Style
+# from colorama import init, Fore, Back, Style
 import random, time
 
 import variables as V
+from powerup import *
 
 class Brick:
     def __init__ (self, x, y, width=1, height=1):
@@ -41,7 +42,7 @@ def display_bricks(bricks, game_arr):
 
     return game_arr
 
-def collide_brick(y, x, BRICKS, GAME_ARR):
+def collide_brick(y, x, BRICKS, GAME_ARR, ball, paddle):
     for i in BRICKS:
         if i.y == y and i.x == x:
 
@@ -51,6 +52,17 @@ def collide_brick(y, x, BRICKS, GAME_ARR):
                 if i.strength == 0:
                     BRICKS.remove(i)
                     GAME_ARR[y][x] = 0
+
+    random_int = random.randint(0, 20)
+
+    rand_array = [ExpandPaddle, ShrinkPaddle, FastBall, PaddleGrab]
+
+    if random_int > 10:
+        rand2 = random.randint(0, 3)
+        this_powerup = rand_array[rand2](x = x, y = y);
+        V.POWERUPS.append(this_powerup)
+
+    
 
     V.BRICKS = BRICKS
     return GAME_ARR

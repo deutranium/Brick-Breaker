@@ -6,7 +6,9 @@ import time
 
 from brick import *
 
-from colorama import init, Fore, Back, Style
+from headers import *
+
+# from colorama import init, Fore, Back, Style
 
 ball = (Back.WHITE + Fore.CYAN + "▣" + Style.RESET_ALL)
 
@@ -47,7 +49,7 @@ class Paddle:
 
 
 class Ball:
-    def __init__ (self, pd):
+    def __init__ (self, pd, vx = 1):
         super().__init__()
         self.width = 0
         self.height = 0
@@ -78,7 +80,7 @@ class Ball:
 
     def move(self, paddle, GAME_ARR, BRICKS):
 
-        if(self.attached):
+        if(self.attached and (self.next_y == (V.ROWS - 1))and (paddle.x - 1 <= self.init_x <= paddle.x + paddle.width + 1)):
             self.init_x = paddle.x + self.paddle_location
             self.x = self.init_x
             self.im_x = self.x + (self.vx)/abs(self.vx)
@@ -100,7 +102,7 @@ class Ball:
                     check_brick_x == 1 ):
 
                     if(check_brick_x == 1):
-                        GAME_ARR = collide_brick(round(self.y),round(self.x + 1*(self.vx)/abs(self.vx)), BRICKS, GAME_ARR)
+                        GAME_ARR = collide_brick(round(self.y),round(self.x + 1*(self.vx)/abs(self.vx)), BRICKS, GAME_ARR, ball = self, paddle = paddle)
 
 
                     self.vx *= -1
@@ -129,7 +131,7 @@ class Ball:
                             self.vx = -4
 
                     if(check_brick_y == 1):
-                        GAME_ARR = collide_brick(round(self.y + 1*(self.vy)/abs(self.vy)), round(self.x), BRICKS, GAME_ARR)
+                        GAME_ARR = collide_brick(round(self.y + 1*(self.vy)/abs(self.vy)), round(self.x), BRICKS, GAME_ARR, ball = self, paddle = paddle)
 
                     self.vy *= -1
                     self.init_x = round(self.x)
@@ -146,7 +148,7 @@ class Ball:
                 if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or (self.x + 1*(self.vx)/abs(self.vx) == 0)
                 or check_brick_x == 1):
                     if(check_brick_x == 1):
-                        GAME_ARR = collide_brick(round(self.y),round(self.x + 1*(self.vx)/abs(self.vx)), BRICKS, GAME_ARR)
+                        GAME_ARR = collide_brick(round(self.y),round(self.x + 1*(self.vx)/abs(self.vx)), BRICKS, GAME_ARR, ball = self, paddle = paddle)
 
 
 

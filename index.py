@@ -9,6 +9,8 @@ from colorama import init, Fore, Back, Style
 
 import brick
 
+from powerup import *
+
 
 SCORE = 0
 LIVES = 3
@@ -112,6 +114,8 @@ for i in range(3):
     ball = Ball(pd)
     LIVES = 3 - i
 
+    V.POWERUPS = []
+
     while True:
         txt = input_char(timeout = t/2)
         if(txt != None):
@@ -136,6 +140,7 @@ for i in range(3):
             else:
                 GAME_ARR = ball.move(pd, GAME_ARR, BRICKS)
                 GAME_ARR = brick.display_bricks(V.BRICKS, GAME_ARR)
+                GAME_ARR = display_powerup(GAME_ARR, ball, pd)
 
 
  
