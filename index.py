@@ -7,6 +7,8 @@ import variables as V
 
 from colorama import init, Fore, Back, Style
 
+import brick
+
 
 SCORE = 0
 LIVES = 3
@@ -19,8 +21,8 @@ SPEED = 2
 BLOCK = 0
 GAME_ARR = [[BLOCK for x in range(COLS)] for y in range(ROWS)]
 
-for i in range(4):
-    GAME_ARR[4][i + 15] = 1
+# for i in range(4):
+#     GAME_ARR[4][i + 15] = 1
 start_time = time.time()
 
 pd = Paddle(20, 1)
@@ -31,6 +33,8 @@ def print_stats(time, lives, score):
         """Time: %d,\nLives: %d,\nScore: %d
         """ % (time, lives, score)
     )
+
+GAME_ARR = brick.create_bricks(COLS, ROWS, 20, GAME_ARR)
 
 # RENDER GAME_ARR
 def setup():
@@ -104,11 +108,14 @@ for i in range(3):
         else:
             pd.v = 0
 
-        if(ball.init_y + ball.vy >= V.ROWS):
+        if(ball.init_y + 1 >= V.ROWS):
             end_game()
             break
         else:
-            ball.move(pd, GAME_ARR)
+            if ball.check_death(pd):
+                break
+            else:
+                ball.move(pd, GAME_ARR)
  
         print(type(GAME_ARR[-1]))
             
@@ -122,11 +129,11 @@ for i in range(3):
         GAME_ARR[-1] = pd.display()
         
         setup()
-        print(ball.vx)
-        print(ball.vy)
+        # print(ball.vx)
+        # print(ball.vy)
         
         
         time.sleep(t)
         GAME_ARR[ball.init_y][ball.init_x] = 0
 
-# end_game()
+end_game()

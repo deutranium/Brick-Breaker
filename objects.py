@@ -8,7 +8,8 @@ from colorama import init, Fore, Back, Style
 
 # paddle = Fore.BLACK + Back.RED + "<========>" + Style.RESET_ALL
 
-ball = (Back.WHITE + Fore.CYAN + "⬤" + Style.RESET_ALL)
+# ball = (Back.WHITE + Fore.CYAN + "⬤" + Style.RESET_ALL)
+ball = (Back.WHITE + Fore.CYAN + "▣" + Style.RESET_ALL)
 
 unbreakable_brick = "|_x_|"
 
@@ -71,6 +72,10 @@ class Ball:
 
         self.attached = True
 
+    def check_death(self, paddle):
+        if (self.y + self.vy >= V.ROWS - 1) and not (paddle.x - 1 <= self.init_x <= paddle.x + paddle.width + 1):
+            return 1
+
 
     def move(self, paddle, GAME_ARR):
 
@@ -86,9 +91,9 @@ class Ball:
             self.im_y = self.y + (self.vy)/abs(self.vy)
 
             check_brick_x = GAME_ARR[round(self.y)][round(self.x + 1*(self.vx)/abs(self.vx))]
-            print(check_brick_x)
+            # print(check_brick_x)
             check_brick_y = GAME_ARR[round(self.y + 1*(self.vy)/abs(self.vy))][round(self.x)]
-            print(check_brick_y)
+            # print(check_brick_y)
 
             if(self.next_y == self.y):
                 if((self.x + 1*(self.vx)/abs(self.vx) == V.COLS - 1) or
