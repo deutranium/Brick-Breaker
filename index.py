@@ -24,7 +24,6 @@ for i in range(4):
 start_time = time.time()
 
 pd = Paddle(20, 1)
-ball = Ball(pd)
 
 # print stats like life etc.
 def print_stats(time, lives, score):
@@ -86,44 +85,48 @@ def end_game():
     print("\033[H\033[J", end="")
     print(msg % (TIME_ELAPSED, LIVES, SCORE))
 
-while True:
-    txt = input_char(timeout = t/2)
-    if(txt != None):
-        time.sleep(t/2)
-    if txt.lower() == "a":
-        pd.v = -1
-    elif txt.lower() == "d":
-        pd.v = 1
-    elif txt.lower() == "q":
-        break
-    elif ball.attached and txt.lower() == "p":
-        ball.attached = False
-    else:
-        pd.v = 0
+for i in range(3):
+    ball = Ball(pd)
+    LIVES = 3 - i
 
-    if(ball.init_y + ball.vy >= V.ROWS):
-        LIVES -= 1
-        if LIVES == 0:
+    while True:
+        txt = input_char(timeout = t/2)
+        if(txt != None):
+            time.sleep(t/2)
+        if txt.lower() == "a":
+            pd.v = -1
+        elif txt.lower() == "d":
+            pd.v = 1
+        elif txt.lower() == "q":
+            break
+        elif ball.attached and txt.lower() == "p":
+            ball.attached = False
+        else:
+            pd.v = 0
+
+        if(ball.init_y + ball.vy >= V.ROWS):
             end_game()
             break
-    else:
-        ball.move(pd, GAME_ARR)
-        # ball.move(pd, )
-        # pass
+        else:
+            ball.move(pd, GAME_ARR)
+ 
+        print(type(GAME_ARR[-1]))
+            
+        GAME_ARR = ball.display(GAME_ARR)
+        print(type(GAME_ARR[-1]))
+
+        if (pd.x + pd.v*SPEED + pd.width + 1 > COLS) or (pd.x + pd.v*SPEED < 0):
+            pd.v = 0
+
+        pd.move()
+        GAME_ARR[-1] = pd.display()
         
-    GAME_ARR[round(ball.init_y)][round(ball.init_x)] = ball.display()
+        setup()
+        print(ball.vx)
+        print(ball.vy)
+        
+        
+        time.sleep(t)
+        GAME_ARR[ball.init_y][ball.init_x] = 0
 
-    if (pd.x + pd.v*SPEED + pd.width + 1 > COLS) or (pd.x + pd.v*SPEED < 0):
-        pd.v = 0
-
-    pd.move()
-    GAME_ARR[-1] = pd.display()
-    
-    setup()
-    print(ball.vx)
-    print(ball.vy)
-    
-    
-    time.sleep(t)
-    GAME_ARR[ball.init_y][ball.init_x] = 0
-
+# end_game()

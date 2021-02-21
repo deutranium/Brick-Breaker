@@ -39,27 +39,11 @@ class Paddle:
         w = self.width
 
         
-        arr = [Back.WHITE + " "]*x + [Back.MAGENTA + Style.BRIGHT + "|"] + ["|"]*w + ["|"] + [ Back.WHITE + " "*(V.COLS - x - w - 2) + Style.RESET_ALL]
+        arr = [Back.WHITE + " "]*x + [Back.MAGENTA + Style.BRIGHT + "|"] + ["|"]*w + ["|"] + [ Back.WHITE + " " + Style.RESET_ALL]*(V.COLS - x - w - 2)
 
         return arr
 
-class Brick:
-    def __init__ (self, id, width=1, height=1):
-        super().__init__()
 
-        self.width = 1
-        self.height = 1
-
-        self.x = 1
-        self.y = 1
-
-        self.id = id
-
-    def display(self):
-        y = self.y
-        x = self.x
-
-        return ('\n'*y + ' '*x + brick1)
 
 
 class Ball:
@@ -100,11 +84,6 @@ class Ball:
         # predicted location
             self.im_x = self.x + (self.vx)/abs(self.vx)
             self.im_y = self.y + (self.vy)/abs(self.vy)
-
-            print(str(round(self.x)))
-            print(str(round(self.y)))
-            print(str(round(self.x + 1*(self.vx)/abs(self.vx))) + "bvekjbvdc")
-            print(str(round(self.y + 1*(self.vy)/abs(self.vy))) + "freiythfgejkr")
 
             check_brick_x = GAME_ARR[round(self.y)][round(self.x + 1*(self.vx)/abs(self.vx))]
             print(check_brick_x)
@@ -209,10 +188,12 @@ class Ball:
 
 
 
-    def display(self):
+    def display(self, game_arr):
         y = self.init_y
         x = self.init_x
 
-        return ball
+        game_arr[y][x] = ball
+
+        return game_arr
 
 
