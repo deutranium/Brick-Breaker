@@ -21,6 +21,8 @@ SPEED = 2
 BLOCK = 0
 GAME_ARR = [[BLOCK for x in range(COLS)] for y in range(ROWS)]
 
+POWERUPS = V.POWERUPS
+
 # for i in range(4):
 #     GAME_ARR[4][i + 15] = 1
 start_time = time.time()
@@ -43,7 +45,7 @@ COLORS = {
     1: Back.RED,
     2: Back.GREEN,
     3: Back.BLUE,
-    1000: Back.BLACK
+    1000: Back.MAGENTA
 }
 
 # RENDER GAME_ARR
@@ -58,7 +60,6 @@ def setup():
             if j == 0:
                 print(Back.WHITE + str(j) + Style.RESET_ALL, end="")
             elif j == 1:
-                # print(Back.RED + str(j) + Style.RESET_ALL, end="")
                 for brick in V.BRICKS:
                     if(brick.x == idx_j) and (brick.y == idx):
                         strngth = brick.strength
@@ -105,7 +106,7 @@ def end_game():
 ⠀⠀⠀⠙⠷⠶⠶⠶⠿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀score: %d
     """
     print("\033[H\033[J", end="")
-    print(msg % (TIME_ELAPSED, LIVES, SCORE))
+    print(msg % (TIME_ELAPSED, LIVES, V.SCORE))
 
 for i in range(3):
     ball = Ball(pd)

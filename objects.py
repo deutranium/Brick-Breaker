@@ -8,9 +8,6 @@ from brick import *
 
 from colorama import init, Fore, Back, Style
 
-# paddle = Fore.BLACK + Back.RED + "<========>" + Style.RESET_ALL
-
-# ball = (Back.WHITE + Fore.CYAN + "⬤" + Style.RESET_ALL)
 ball = (Back.WHITE + Fore.CYAN + "▣" + Style.RESET_ALL)
 
 unbreakable_brick = "|_x_|"
@@ -42,7 +39,7 @@ class Paddle:
         w = self.width
 
         
-        arr = [Back.WHITE + " "]*x + [Back.MAGENTA + Style.BRIGHT + "|"] + ["|"]*w + ["|"] + [ Back.WHITE + " " + Style.RESET_ALL]*(V.COLS - x - w - 2)
+        arr = [Back.WHITE + " "]*x + [Back.BLACK + Style.BRIGHT + "|"] + ["|"]*w + ["|"] + [ Back.WHITE + " " + Style.RESET_ALL]*(V.COLS - x - w - 2)
 
         return arr
 
@@ -171,28 +168,6 @@ class Ball:
                 self.next_y = self.init_y + self.vy
         
         return GAME_ARR
-
-            # if(self.x >= V.COLS - 1) or (self.x <= 0):
-            #     self.vx *= -1
-            #     self.init_x = round(self.x) + self.vx
-            #     self.init_y = round(self.y) + self.vy
-            #     self.next_x = self.init_x + self.vx
-            #     self.next_y = self.init_y + self.vy
-            # if(self.y <= 0):
-            #     self.vy *= -1
-            #     self.init_x = round(self.x) + self.vx
-            #     self.init_y = round(self.y) + self.vy
-            #     self.next_y = self.init_y + self.vy
-            #     self.next_x = self.init_x + self.vx
-                
-
-            
-
-
-            # V.GAME_ARR[self.y][self.x] = self.display()
-
-
-
 
     def display(self, game_arr):
         y = self.init_y

@@ -9,3 +9,4 @@ COLS = 100
 SPEED = 2
 
 BRICKS = []
+POWERUPS = []
